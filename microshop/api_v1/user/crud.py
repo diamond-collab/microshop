@@ -12,7 +12,7 @@ DEFAULT_USER_ROLE_ID = 2
 
 async def create_user(session: AsyncSession, user_in: UserCreate) -> UserOrm:
     user = UserOrm(
-        role_user_id=DEFAULT_USER_ROLE_ID,
+        role_id=DEFAULT_USER_ROLE_ID,
         username=user_in.username,
         email=str(user_in.email),
         hashed_password=hash_password(user_in.password),

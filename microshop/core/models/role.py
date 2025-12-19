@@ -18,4 +18,4 @@ class RoleOrm(Base):
     role_description: Mapped[str] = mapped_column(Text, nullable=True)
 
     # Список пользователей будет автоматически доступен через RelationMixin
-    users: Mapped[list['UserOrm']] = relationship(back_populates='roles')
+    users: Mapped[list['UserOrm']] = relationship(back_populates='role')

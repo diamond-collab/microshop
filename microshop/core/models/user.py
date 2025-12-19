@@ -15,7 +15,7 @@ class UserOrm(Base):
     __tablename__ = 'users'
 
     user_id: Mapped[int] = mapped_column(primary_key=True)
-    role_user_id: Mapped[int] = mapped_column(
+    role_id: Mapped[int] = mapped_column(
         ForeignKey('roles.role_id'),
         nullable=False,
     )
@@ -42,4 +42,4 @@ class UserOrm(Base):
         nullable=True,
     )
 
-    roles: Mapped['RoleOrm'] = relationship(back_populates='users')
+    role: Mapped['RoleOrm'] = relationship(back_populates='users')
