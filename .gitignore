@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+.venv/
+venv/
+
+# IDE settings
+.idea/
+.vscode/
+
+# Environment
+.env
+
+# Alembic cache
+alembic/__pycache__/
+microshop/__pycache__/
+microshop/api_v1/__pycache__/
+microshop/core/__pycache__/
