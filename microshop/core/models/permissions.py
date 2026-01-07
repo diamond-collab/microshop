@@ -16,7 +16,7 @@ class PermissionOrm(Base):
     permission_code: Mapped[str]
     permission_description: Mapped[str]
 
-    # roles: Mapped[list['RoleOrm']] = relationship(
-    #     secondary='role_permissions',
-    #     back_populates='permissions',
-    # )
+    roles: Mapped[list['RoleOrm']] = relationship(
+        secondary='role_permissions',
+        back_populates='permissions',
+    )

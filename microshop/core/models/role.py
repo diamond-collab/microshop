@@ -8,6 +8,7 @@ from .base import Base
 
 if TYPE_CHECKING:
     from .user import UserOrm
+    from .permissions import PermissionOrm
 
 
 class RoleOrm(Base):
@@ -19,3 +20,8 @@ class RoleOrm(Base):
 
     # Список пользователей будет автоматически доступен через RelationMixin
     users: Mapped[list['UserOrm']] = relationship(back_populates='role')
+
+    permissions: Mapped[list['PermissionOrm']] = relationship(
+        secondary='role_permissions',
+        back_populates='roles',
+    )
