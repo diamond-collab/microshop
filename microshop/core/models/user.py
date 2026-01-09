@@ -44,4 +44,4 @@ class UserOrm(Base):
     )
 
     role: Mapped['RoleOrm'] = relationship(back_populates='users')
-    carts: Mapped['CartOrm'] = relationship(back_populates='user')
+    carts: Mapped[list['CartOrm']] = relationship(back_populates='user')
