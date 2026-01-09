@@ -9,6 +9,7 @@ from .base import Base
 
 if TYPE_CHECKING:
     from .user import UserOrm
+    from .cart_items import CartItemAssocOrm
 
 
 class CartOrm(Base):
@@ -30,3 +31,4 @@ class CartOrm(Base):
     )
 
     user: Mapped['UserOrm'] = relationship(back_populates='carts')
+    cart_items: Mapped[list['CartItemAssocOrm']] = relationship(back_populates='cart')
