@@ -16,7 +16,7 @@ class OrderOrm(Base):
 
     order_id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey('users.user_id'))
-    order_state: Mapped[str]
+    order_state: Mapped[str | None]
     created_at: Mapped[datetime] = mapped_column(
         server_default=func.now(),
         default=datetime.now,

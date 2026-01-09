@@ -7,6 +7,7 @@ from .role_permissions import RolePermissionsAssoc
 from .cart import CartOrm
 from .cart_items import CartItemAssocOrm
 from .orders import OrderOrm
+from .order_items import OrderProductAssoc
 
 
 __all__ = [
@@ -19,4 +20,5 @@ __all__ = [
     CartOrm,
     CartItemAssocOrm,
     OrderOrm,
+    OrderProductAssoc,
 ]
