@@ -9,6 +9,7 @@ from .base import Base
 
 if TYPE_CHECKING:
     from .role import RoleOrm
+    from .cart import CartOrm
 
 
 class UserOrm(Base):
@@ -43,3 +44,4 @@ class UserOrm(Base):
     )
 
     role: Mapped['RoleOrm'] = relationship(back_populates='users')
+    carts: Mapped['CartOrm'] = relationship(back_populates='user')

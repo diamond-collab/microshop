@@ -1,5 +1,5 @@
 from sqlalchemy import select, Result
-from sqlalchemy.ext.asyncio.session import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession
 
 
 from .schemas import UserCreate, UpdateUser
