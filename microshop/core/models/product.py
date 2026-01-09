@@ -8,6 +8,7 @@ from .base import Base
 
 if TYPE_CHECKING:
     from .cart_items import CartItemAssocOrm
+    from .order_items import OrderProductAssoc
 
 
 class Product(Base):
@@ -17,3 +18,4 @@ class Product(Base):
     price: Mapped[int]
 
     products_details: Mapped[list['CartItemAssocOrm']] = relationship(back_populates='product')
+    order_items: Mapped[list['OrderProductAssoc']] = relationship(back_populates='product')

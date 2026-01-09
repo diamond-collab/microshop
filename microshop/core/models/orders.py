@@ -1,9 +1,14 @@
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import ForeignKey, func
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import Base
+
+
+if TYPE_CHECKING:
+    from .order_items import OrderProductAssoc
 
 
 class OrderOrm(Base):
@@ -17,3 +22,5 @@ class OrderOrm(Base):
         default=datetime.now,
         nullable=False,
     )
+
+    order_items: Mapped[list['OrderProductAssoc']] = relationship(back_populates='order')
