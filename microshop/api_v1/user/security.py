@@ -11,4 +11,4 @@ def hash_password(password: str) -> str:
 
 
 def verify_password(password: str, hashed_password: str) -> bool:
-    pass
+    return bcrypt.checkpw(password.encode(), hashed_password.encode())
