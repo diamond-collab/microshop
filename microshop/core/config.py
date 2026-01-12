@@ -8,6 +8,11 @@ class Settings(BaseSettings):
     db_url: str = Field(..., env='DB_URL')
     db_echo: bool = True
 
+    # JWT
+    SECRET_KEY: str = Field(..., env='SECRET_KEY')
+    ALGORITHM: str = Field(..., env='ALGORITHM')
+
+
     class Config:
         env_file = '.env'
 
