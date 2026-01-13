@@ -1,6 +1,5 @@
 from datetime import datetime, timezone, timedelta
 
-from fastapi import HTTPException, status
 from jose import JWTError, jwt
 
 from .schemas import TokenData, TokenPayload
@@ -27,17 +26,18 @@ def encode_jwt_token(user: UserOrm | dict) -> dict:
     }
 
 
-def decode_jwt_token(token: str) -> TokenData:
+def decode_jwt_token(token: str) -> TokenData | None:
     try:
         payload = jwt.decode(
             token,
             settings.SECRET_KEY,
             algorithms=[settings.ALGORITHM],
         )
+
+        exp = payload.get('exp')
+        if exp is None or datetime.fromtimestamp(exp, timezone.utc) <= datetime.now(timezone.utc):
+            return None
+
         return TokenData(**payload)
     except JWTError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='Invalid token',
-            headers={'WWW-Authenticate': 'Bearer'},
-        )
+        return None

@@ -30,3 +30,10 @@ class LoginResponse(BaseModel):
     role_id: int
     access_token: str
     token_type: str
+
+
+class ResponseUser(BaseModel):
+    user_id: int
+    username: str
+    email: str
+    role_id: int
