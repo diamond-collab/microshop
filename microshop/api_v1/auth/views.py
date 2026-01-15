@@ -4,6 +4,7 @@ from fastapi.security import OAuth2PasswordBearer, HTTPBearer
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
 from .schemas import LoginResponse, UserLogin, ResponseUser
+from .dependencies import current_user
 from microshop.api_v1.auth import crud
 from microshop.core.models.db_helper import db_helper
 from microshop.core.models.user import UserOrm
@@ -32,17 +33,22 @@ async def login(
     return result
 
 
-@router.get('/me/', response_model=ResponseUser)
-async def get_me(
-    token=Depends(oauth2_scheme),
-    session: AsyncSession = Depends(db_helper.get_session),
-) -> UserOrm:
-    raw_token = token.credentials
-    result = await crud.get_current_user(token=raw_token, session=session)
-    if not result:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='Invalid credentials',
-        )
+# @router.get('/me/', response_model=ResponseUser)
+# async def get_me(
+#     token=Depends(oauth2_scheme),
+#     session: AsyncSession = Depends(db_helper.get_session),
+# ) -> UserOrm:
+#     raw_token = token.credentials
+#     result = await crud.get_current_user(token=raw_token, session=session)
+#     if not result:
+#         raise HTTPException(
+#             status_code=status.HTTP_401_UNAUTHORIZED,
+#             detail='Invalid credentials',
+#         )
+#
+#     return result
 
-    return result
+
+@router.get('/me/', response_model=ResponseUser)
+async def get_me(user: UserOrm = Depends(current_user)) -> UserOrm:
+    return user

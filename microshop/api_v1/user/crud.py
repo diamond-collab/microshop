@@ -1,10 +1,11 @@
 from sqlalchemy import select, Result
+from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
 from .schemas import UserCreate, UpdateUser
 from .security import hash_password
-from microshop.core.models import UserOrm
+from microshop.core.models import UserOrm, RoleOrm
 
 
 DEFAULT_USER_ROLE_ID = 2
@@ -32,7 +33,13 @@ async def get_user_by_email(session: AsyncSession, email: str) -> UserOrm | None
 
 
 async def get_user_by_id(session: AsyncSession, user_id: int) -> UserOrm | None:
-    return await session.get(UserOrm, user_id)
+    stmt = (
+        select(UserOrm)
+        .where(UserOrm.user_id == user_id)
+        .options(selectinload(UserOrm.role).joinedload(RoleOrm.permissions))
+    )
+    result: Result = await session.execute(stmt)
+    return result.scalar_one_or_none()
 
 
 async def update_data_user(session: AsyncSession, user_id: int, data: UpdateUser) -> UserOrm | None:
