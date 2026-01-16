@@ -2,10 +2,9 @@ from typing import Any
 
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
-from .jwt import encode_jwt_token, decode_jwt_token
-from .schemas import UserLogin, LoginResponse, TokenData
+from .jwt import encode_access_token, encode_refresh_token, decode_refresh_token
+from .schemas import UserLogin, LoginResponse, RefreshResponse
 from microshop.api_v1.user import crud, security
-from microshop.core.models.user import UserOrm
 
 
 async def login_user(
@@ -30,24 +29,49 @@ async def login_user(
         'role_id': user.role_id,
     }
 
-    token = encode_jwt_token(user_data)
+    access_token = encode_access_token(user_data)
+    refresh_token = encode_refresh_token(user_data)
 
     return LoginResponse(
         user_id=user.user_id,
         username=user.username,
         email=user.email,
         role_id=user.role_id,
-        **token,
+        **access_token,
+        **refresh_token,
     )
 
 
-async def get_current_user(token: 'str', session: AsyncSession) -> UserOrm | None:
-    decoded_token: TokenData | None = decode_jwt_token(token=token)
-    if not decoded_token:
+async def refresh_access_token(session, token: str):
+    refresh_token = decode_refresh_token(token)
+    if not refresh_token:
         return None
 
-    user_id: str = decoded_token.sub
-    user = await crud.get_user_by_id(session, int(user_id))
+    user_id = int(refresh_token.sub)
+    user = await crud.get_user_by_id(session, user_id)
     if not user:
         return None
-    return user
+
+    user_data: dict[str, Any] = {
+        'user_id': user.user_id,
+        'username': user.username,
+        'email': user.email,
+        'role_id': user.role_id,
+    }
+
+    access_token = encode_access_token(user_data)
+    return RefreshResponse(
+        **access_token,
+    )
+
+
+# async def get_current_user(token: 'str', session: AsyncSession) -> UserOrm | None:
+#     decoded_token: TokenData | None = decode_access_token(token=token)
+#     if not decoded_token:
+#         return None
+#
+#     user_id: str = decoded_token.sub
+#     user = await crud.get_user_by_id(session, int(user_id))
+#     if not user:
+#         return None
+#     return user

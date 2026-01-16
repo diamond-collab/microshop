@@ -11,7 +11,8 @@ class Settings(BaseSettings):
     # JWT
     SECRET_KEY: str = Field(..., env='SECRET_KEY')
     ALGORITHM: str = Field(..., env='ALGORITHM')
-
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
+    REFRESH_TOKEN_EXPIRE_DAYS: int = 30
 
     class Config:
         env_file = '.env'

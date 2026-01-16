@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordBearer, HTTPBearer
 
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
-from .schemas import LoginResponse, UserLogin, ResponseUser
+from .schemas import LoginResponse, UserLogin, ResponseUser, RefreshRequest, RefreshResponse
 from .dependencies import current_user
 from microshop.api_v1.auth import crud
 from microshop.core.models.db_helper import db_helper
@@ -33,20 +33,23 @@ async def login(
     return result
 
 
-# @router.get('/me/', response_model=ResponseUser)
-# async def get_me(
-#     token=Depends(oauth2_scheme),
-#     session: AsyncSession = Depends(db_helper.get_session),
-# ) -> UserOrm:
-#     raw_token = token.credentials
-#     result = await crud.get_current_user(token=raw_token, session=session)
-#     if not result:
-#         raise HTTPException(
-#             status_code=status.HTTP_401_UNAUTHORIZED,
-#             detail='Invalid credentials',
-#         )
-#
-#     return result
+@router.post('/refresh/', response_model=RefreshResponse)
+async def refresh_the_access_token(
+    data: RefreshRequest,
+    session: AsyncSession = Depends(db_helper.get_session),
+):
+    result = await crud.refresh_access_token(
+        session=session,
+        token=data.refresh_token,
+    )
+
+    if not result:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail='Not authenticated',
+        )
+
+    return result
 
 
 @router.get('/me/', response_model=ResponseUser)
