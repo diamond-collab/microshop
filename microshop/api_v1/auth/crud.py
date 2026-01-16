@@ -3,14 +3,19 @@ from typing import Any
 from sqlalchemy.ext.asyncio.session import AsyncSession
 
 from .jwt import encode_access_token, encode_refresh_token, decode_refresh_token
-from .schemas import UserLogin, LoginResponse, RefreshResponse
+from .schemas import (
+    UserLogin,
+    LoginResponse,
+    RefreshResponse,
+    PublicResponse,
+)
 from microshop.api_v1.user import crud, security
 
 
 async def login_user(
     user_in: UserLogin,
     session: AsyncSession,
-) -> LoginResponse | None:
+) -> tuple[PublicResponse, LoginResponse] | None:
     user = await crud.get_user_by_email(session, str(user_in.email))
     if not user:
         return None
@@ -32,14 +37,19 @@ async def login_user(
     access_token = encode_access_token(user_data)
     refresh_token = encode_refresh_token(user_data)
 
-    return LoginResponse(
+    login_response = LoginResponse(
+        refresh_token=refresh_token.get('refresh_token'),
+    )
+
+    public_response = PublicResponse(
         user_id=user.user_id,
         username=user.username,
         email=user.email,
         role_id=user.role_id,
         **access_token,
-        **refresh_token,
     )
+
+    return public_response, login_response
 
 
 async def refresh_access_token(session, token: str):

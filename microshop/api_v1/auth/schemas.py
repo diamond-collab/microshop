@@ -49,12 +49,14 @@ class TokenData(BaseModel):
 
 
 class LoginResponse(BaseModel):
+    refresh_token: str
+
+class PublicResponse(BaseModel):
     user_id: int
     username: str
     email: str
     role_id: int
     access_token: str
-    refresh_token: str
     token_type: str = 'bearer'
 
 
