@@ -52,7 +52,10 @@ async def login_user(
     return public_response, login_response
 
 
-async def refresh_access_token(session, token: str):
+async def refresh_access_token(session, token: str | None):
+    if not token:
+        return None
+
     refresh_token = decode_refresh_token(token)
     if not refresh_token:
         return None

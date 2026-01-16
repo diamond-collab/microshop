@@ -37,13 +37,16 @@ async def login(
     response: Response,
     session: AsyncSession = Depends(db_helper.get_session),
 ) -> PublicResponse | dict:
-    result, login_response = await crud.login_user(user_in=user_in, session=session)
+    data = await crud.login_user(user_in=user_in, session=session)
 
-    if not result:
+    if data is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail='Invalid username or password',
         )
+
+    public_response, login_response = data
+
     refresh_token = login_response.refresh_token
     response.set_cookie(
         key='refresh_token',
@@ -55,7 +58,7 @@ async def login(
         max_age=30 * 24 * 60 * 60,
     )
 
-    return result
+    return public_response
 
 
 @router.post('/refresh/', response_model=RefreshResponse)
@@ -63,6 +66,12 @@ async def refresh_the_access_token(
     refresh_token: str | None = Cookie(default=None, alias='refresh_token'),
     session: AsyncSession = Depends(db_helper.get_session),
 ):
+    if not refresh_token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail='Not authenticated',
+        )
+
     result = await crud.refresh_access_token(
         session=session,
         token=refresh_token,
@@ -75,6 +84,18 @@ async def refresh_the_access_token(
         )
 
     return result
+
+
+@router.post('/logout/')
+async def logout(response: Response):
+    response.delete_cookie(
+        key='refresh_token',
+        path='/api/v1/auth/',
+    )
+
+    return {
+        'message': 'Logged out',
+    }
 
 
 @router.get('/me/', response_model=ResponseUser)
