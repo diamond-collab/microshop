@@ -101,3 +101,19 @@ async def add_item(
     await session.commit()
 
     return await get_cart(session=session, user_id=user_id)
+
+
+async def get_active_cart_with_items(session: AsyncSession, user_id: int) -> CartOrm | None:
+    stmt = (
+        select(CartOrm)
+        .where(
+            CartOrm.user_id == user_id,
+            CartOrm.is_active == True,
+        )
+        .options(selectinload(CartOrm.cart_items).joinedload(CartItemAssocOrm.product))
+    )
+    cart = await session.scalar(stmt)
+    if not cart:
+        return None
+
+    return cart
