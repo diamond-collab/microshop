@@ -7,14 +7,6 @@ from microshop.core.models import Product
 from .schemas import ProductCreate
 
 
-async def create_product(session: AsyncSession, product_in: ProductCreate) -> Product:
-    product = Product(**product_in.model_dump())
-    session.add(product)
-    await session.commit()
-    await session.refresh(product)
-    return product
-
-
 async def get_products(session: AsyncSession) -> list[Product]:
     stmt = select(Product).order_by(Product.product_id)
     result: Result = await session.execute(stmt)

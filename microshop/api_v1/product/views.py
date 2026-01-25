@@ -10,13 +10,6 @@ from microshop.core.models.db_helper import db_helper
 router = APIRouter(tags=['Products'])
 
 
-@router.post('/', response_model=Product)
-async def create_product(
-    product_in: ProductCreate, session: AsyncSession = Depends(db_helper.get_session)
-):
-    return await crud.create_product(session=session, product_in=product_in)
-
-
 @router.get('/', response_model=List[Product])
 async def get_product(session: AsyncSession = Depends(db_helper.get_session)):
     return await crud.get_products(session=session)
