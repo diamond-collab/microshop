@@ -28,7 +28,11 @@ package-mode = false
 
 [dependency-groups]
 dev = [
-    "pytest (>=9.0.1,<10.0.0)"
+    "pytest (>=9.0.1,<10.0.0)",
+    "pytest-asyncio (>=1.3.0,<2.0.0)",
+    "httpx (>=0.28.1,<0.29.0)",
+    "pytest-env (>=1.2.0,<2.0.0)",
+    "pytest-dotenv (>=0.5.2,<0.6.0)"
 ]
 
 
