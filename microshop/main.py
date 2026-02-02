@@ -1,3 +1,5 @@
+from contextlib import asynccontextmanager
+
 import uvicorn
 from fastapi import FastAPI
 
@@ -5,6 +7,7 @@ from microshop.core.config import settings
 from microshop.api_v1 import router as router_v1
 
 
+@asynccontextmanager
 async def lifespan(app: FastAPI):
     yield
 
