@@ -2,7 +2,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from microshop.api_v1.admin.schemas import OrderState
+from microshop.api_v1.admin.order.schemas import OrderState
 from microshop.core.models import OrderOrm, OrderProductAssoc
 
 

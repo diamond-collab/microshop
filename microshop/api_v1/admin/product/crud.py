@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from microshop.api_v1.admin.schemas import UpdateProduct
+from microshop.api_v1.admin.product.schemas import UpdateProduct
 from microshop.api_v1.product import crud
 from microshop.api_v1.product.schemas import ProductCreate
 from microshop.core.models import Product
