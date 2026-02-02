@@ -6,7 +6,7 @@ from . import crud
 from microshop.api_v1.auth.dependencies import require_permission
 from microshop.api_v1.user.crud import get_user_by_id
 from microshop.core.models.db_helper import db_helper
-from microshop.api_v1.admin.schemas import (
+from microshop.api_v1.admin.order.schemas import (
     OrderState,
     ResponseAllOrder,
     OrderDetailResponse,

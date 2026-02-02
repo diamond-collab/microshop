@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 
 from . import crud
-from microshop.api_v1.admin.schemas import UpdateProduct
+from microshop.api_v1.admin.product.schemas import UpdateProduct
 from microshop.api_v1.auth.dependencies import require_permission
 from microshop.api_v1.product.schemas import Product, ProductCreate
 from microshop.core.models.db_helper import db_helper
