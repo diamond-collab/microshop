@@ -4,7 +4,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 
 from microshop.core.models import Product
-from .schemas import ProductCreate
 
 
 async def get_products(session: AsyncSession) -> list[Product]:

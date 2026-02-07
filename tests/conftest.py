@@ -170,7 +170,6 @@ async def admin_headers(client, admin_in_db, admin_payload):
         },
     )
     assert resp.status_code == 200, resp.text
-    print(resp.json())
     token = resp.json()['access_token']
     return {'Authorization': f'Bearer {token}'}
 

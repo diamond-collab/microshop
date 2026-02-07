@@ -1,8 +1,6 @@
-import logging
 import pytest
 
 
-LOGIN_URL = '/api/v1/auth/login/'
 ADMIN_CREATE_PRODUCT = '/api/v1/admin/product/'
 
 
@@ -35,7 +33,6 @@ async def test_admin_endpoint_allowed_for_manager(
         },
     )
     assert resp.status_code in (200, 201), resp.text
-    print(resp.json())
 
 
 @pytest.mark.asyncio

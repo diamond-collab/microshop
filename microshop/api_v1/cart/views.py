@@ -37,7 +37,7 @@ async def add_cart(
     return cart_items
 
 
-@router.get('/cart', response_model=CartResponse)
+@router.get('/cart/', response_model=CartResponse)
 async def get_my_cart(
     session: AsyncSession = Depends(db_helper.get_session),
     user: UserOrm = Depends(current_user),
