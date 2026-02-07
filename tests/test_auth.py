@@ -160,15 +160,12 @@ async def test_refresh_token(client, user_in_db, auth_tokens):
     assert resp.status_code == 200, resp.text
 
     data = resp.json()
-    print(data)
     assert 'access_token' in data
 
 
 @pytest.mark.asyncio
 async def test_refresh_token_wrong(client, user_in_db, auth_tokens):
-    resp = await client.post(
-        REFRESH_TOKEN,
-        cookies={'refresh_token': 'awqefafaf'},
-    )
+    client.cookies.set('refresh_token', 'awqefafaf')
+
+    resp = await client.post(REFRESH_TOKEN)
     assert resp.status_code == 401, resp.text
-    print(resp.json())

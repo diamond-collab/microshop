@@ -6,6 +6,8 @@ PERMISSION = {
     'product:create': 'Добавить продукт',
     'order:read_all': 'Посмотреть все заказы',
     'user:delete': 'Удалить пользователя',
+    'order:status:update': 'Обновить статус заказа',
+    'order:read': 'Просмотр деталей заказа'
 }
 
 
